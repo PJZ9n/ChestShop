@@ -1,0 +1,14 @@
+--- # Poggit-CI Manifest. Open the CI at https://poggit.pmmp.io/ci/PJZ9n/ChestShop
+build-by-default: true
+branches:
+  - master
+projects:
+  ChestShop:
+    libs:
+      - src: dktapps-pm-pl/pmforms/pmforms
+        version: 1.0.0
+      - src: PJZ9n/MoneyConnector/MoneyConnector
+        version: 1.2.1
+      - src: CortexPE/Commando/Commando
+        version: 2.1.1
+...
