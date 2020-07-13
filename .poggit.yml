@@ -11,4 +11,8 @@ projects:
         version: 1.2.1
       - src: CortexPE/Commando/Commando
         version: 2.1.1
+      - src: PJZ9n/Validator-Support-Virion/Validator
+        version: 2.3.4
+      - src: FlowyProject/Flowy/Flowy
+        version: 0.1.0
 ...
