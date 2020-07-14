@@ -26,7 +26,7 @@ use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\level\Position;
 
-class Shop
+abstract class Shop
 {
     /** @var int */
     private $id;
