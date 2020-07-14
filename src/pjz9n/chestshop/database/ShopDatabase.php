@@ -36,14 +36,14 @@ interface ShopDatabase
     public function close(): void;
 
     /**
-     * get all BuyChestShop
+     * get all BuyShop
      *
      * @return BuyShop[]
      */
     public function getAllBuyShop(): array;
 
     /**
-     * save BuyChestShop
+     * save BuyShop
      *
      * @param BuyShop $shop
      */
@@ -64,14 +64,14 @@ interface ShopDatabase
     public function saveBuyLog(BuyLog $log): void;
 
     /**
-     * get all SellChestShop
+     * get all SellShop
      *
      * @return SellShop[]
      */
     public function getAllSellShop(): array;
 
     /**
-     * save SellChesShop
+     * save SellShop
      *
      * @param SellShop $shop
      */
