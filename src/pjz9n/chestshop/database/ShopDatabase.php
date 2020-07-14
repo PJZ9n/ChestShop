@@ -50,6 +50,13 @@ interface ShopDatabase
     public function saveBuyShop(BuyShop $shop): void;
 
     /**
+     * remove BuyShop
+     *
+     * @param BuyShop $shop
+     */
+    public function removeBuyShop(BuyShop $shop): void;
+
+    /**
      * get all buy log
      *
      * @return BuyLog[]
@@ -76,6 +83,13 @@ interface ShopDatabase
      * @param SellShop $shop
      */
     public function saveSellShop(SellShop $shop): void;
+
+    /**
+     * remove SellShop
+     *
+     * @param SellShop $shop
+     */
+    public function removeSellShop(SellShop $shop): void;
 
     /**
      * get all sell log

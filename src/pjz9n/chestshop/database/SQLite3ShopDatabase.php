@@ -176,6 +176,13 @@ EOL;
         }
     }
 
+    public function removeBuyShop(BuyShop $shop): void
+    {
+        $stmt = $this->db->prepare("DELETE FROM buyshop WHERE id = :id;");
+        $stmt->bindValue(":id", $shop->getId(), SQLITE3_INTEGER);
+        $stmt->execute();
+    }
+
     public function getAllBuyLog(): array
     {
         $result = $this->db->query(
@@ -289,6 +296,13 @@ EOL;
             $stmt->bindValue(":owner", $shop->getOwner(), SQLITE3_TEXT);
             $stmt->execute();
         }
+    }
+
+    public function removeSellShop(SellShop $shop): void
+    {
+        $stmt = $this->db->prepare("DELETE FROM sellshop WHERE id = :id;");
+        $stmt->bindValue(":id", $shop->getId(), SQLITE3_INTEGER);
+        $stmt->execute();
     }
 
     public function getAllSellLog(): array
