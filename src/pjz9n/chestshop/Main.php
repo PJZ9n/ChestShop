@@ -23,9 +23,50 @@ declare(strict_types=1);
 
 namespace pjz9n\chestshop;
 
+use CortexPE\Commando\exception\HookAlreadyRegistered;
+use CortexPE\Commando\PacketHooker;
+use PJZ9n\MoneyConnector\MoneyConnector;
+use PJZ9n\MoneyConnector\MoneyConnectorUtils;
+use pocketmine\lang\BaseLang;
 use pocketmine\plugin\PluginBase;
+use pocketmine\utils\Config;
+use RuntimeException;
 
 class Main extends PluginBase
 {
-    //
+    /** @var BaseLang */
+    private $lang;
+
+    /** @var MoneyConnector */
+    private $money;
+
+    /**
+     * @throws HookAlreadyRegistered
+     */
+    public function onEnable(): void
+    {
+        //config
+        new Config($this->getDataFolder() . "config.yml", Config::YAML, [
+            "lang" => "default",
+            "money-api" => "EconomyAPI",
+        ]);
+        //lang
+        $configLang = (string)$this->getConfig()->get("lang", "default");
+        $lang = $configLang === "default" ? $this->getServer()->getLanguage()->getLang() : $configLang;
+        $localePath = $this->getFile() . "resources/locale/";
+        $this->lang = new BaseLang($lang, $localePath, "eng");
+        $this->getLogger()->info($this->lang->translateString("language.selected", [$this->lang->getName()]));
+        //money
+        $configMoney = (string)$this->getConfig()->get("money-api");
+        $money = MoneyConnectorUtils::getConnectorByName($configMoney);
+        if (!($money instanceof MoneyConnector)) {
+            throw new RuntimeException("Unsupported API: " . $configMoney);
+        }
+        $this->money = $money;
+        $this->getLogger()->info($this->lang->translateString("money.selected", [$configMoney]));
+        //commando
+        if (!PacketHooker::isRegistered()) {
+            PacketHooker::register($this);
+        }
+    }
 }
