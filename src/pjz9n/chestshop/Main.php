@@ -25,6 +25,7 @@ namespace pjz9n\chestshop;
 
 use CortexPE\Commando\exception\HookAlreadyRegistered;
 use CortexPE\Commando\PacketHooker;
+use flowy\Flowy;
 use pjz9n\chestshop\database\SQLite3ShopDatabase;
 use PJZ9n\MoneyConnector\MoneyConnector;
 use PJZ9n\MoneyConnector\MoneyConnectorUtils;
@@ -73,6 +74,8 @@ class Main extends PluginBase
         if (!PacketHooker::isRegistered()) {
             PacketHooker::register($this);
         }
+        //flowy
+        Flowy::bootstrap();
         //shopmanager
         $dbPath = $this->getDataFolder() . "shop.sqlite";
         if (!file_exists($dbPath)) {
