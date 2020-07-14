@@ -55,7 +55,8 @@ CREATE TABLE IF NOT EXISTS buyshop (
     chest_x INTEGER NOT NULL,
     chest_y INTEGER NOT NULL,
     chest_z INTEGER NOT NULL,
-    chest_world TEXT NOT NULL
+    chest_world TEXT NOT NULL,
+    owner TEXT NOT NULL
 );
 CREATE TABLE IF NOT EXISTS buylog (
     shop_id INTEGER NOT NULL,
@@ -75,7 +76,8 @@ CREATE TABLE IF NOT EXISTS sellshop (
     chest_x INTEGER NOT NULL,
     chest_y INTEGER NOT NULL,
     chest_z INTEGER NOT NULL,
-    chest_world TEXT NOT NULL
+    chest_world TEXT NOT NULL,
+    owner TEXT NOT NULL
 );
 CREATE TABLE IF NOT EXISTS selllog (
     shop_id INTEGER NOT NULL,
@@ -108,7 +110,8 @@ EOL;
                 $record["item_id"],
                 $record["item_meta"],
                 new Position($record["sign_x"], $record["sign_y"], $record["sign_z"], $signPosLevel),
-                new Position($record["chest_x"], $record["chest_y"], $record["chest_z"], $chestPosLevel)
+                new Position($record["chest_x"], $record["chest_y"], $record["chest_z"], $chestPosLevel),
+                $record["owner"]
             );
         }
         return $shops;
@@ -125,10 +128,10 @@ EOL;
             //new
             $query = <<< EOL
 INSERT INTO buyshop (
-    id, price, item_id, item_meta, sign_x, sign_y, sign_z, sign_world, chest_x, chest_y, chest_z, chest_world
+    id, price, item_id, item_meta, sign_x, sign_y, sign_z, sign_world, chest_x, chest_y, chest_z, chest_world, owner
 )
 VALUES (
-    :id, :price, :item_id, :item_meta, :sign_x, :sign_y, :sign_z, :sign_world, :chest_x, :chest_y, :chest_z, :chest_world
+    :id, :price, :item_id, :item_meta, :sign_x, :sign_y, :sign_z, :sign_world, :chest_x, :chest_y, :chest_z, :chest_world, :owner
 );
 EOL;
             $stmt = $this->db->prepare($query);
@@ -144,6 +147,7 @@ EOL;
             $stmt->bindValue(":chest_y", $shop->getChestPos()->getY(), SQLITE3_INTEGER);
             $stmt->bindValue(":chest_z", $shop->getChestPos()->getZ(), SQLITE3_INTEGER);
             $stmt->bindValue(":chest_world", $shop->getChestPos()->getLevel()->getName(), SQLITE3_TEXT);
+            $stmt->bindValue(":owner", $shop->getOwner(), SQLITE3_TEXT);
             $stmt->execute();
         } else {
             //update
@@ -151,7 +155,7 @@ EOL;
 UPDATE buyshop
 SET price = :price, item_id = :item_id, item_meta = :item_meta,
 sign_x = :sign_x, sign_y = :sign_y, sign_z = :sign_z, sign_world = :sign_world,
-chest_x = :chest_x, chest_y = :chest_y, chest_z = :chest_z, chest_world = :chest_world
+chest_x = :chest_x, chest_y = :chest_y, chest_z = :chest_z, chest_world = :chest_world, owner = :owner
 WHERE id = :id;
 EOL;
             $stmt = $this->db->prepare($query);
@@ -167,6 +171,7 @@ EOL;
             $stmt->bindValue(":chest_y", $shop->getChestPos()->getY(), SQLITE3_INTEGER);
             $stmt->bindValue(":chest_z", $shop->getChestPos()->getZ(), SQLITE3_INTEGER);
             $stmt->bindValue(":chest_world", $shop->getChestPos()->getLevel()->getName(), SQLITE3_TEXT);
+            $stmt->bindValue(":owner", $shop->getOwner(), SQLITE3_TEXT);
             $stmt->execute();
         }
     }
@@ -218,7 +223,8 @@ EOL;
                 $record["item_meta"],
                 new Position($record["sign_x"], $record["sign_y"], $record["sign_z"], $signPosLevel),
                 new Position($record["chest_x"], $record["chest_y"], $record["chest_z"], $chestPosLevel),
-                $record["sell_limit"]
+                $record["sell_limit"],
+                $record["owner"]
             );
         }
         return $shops;
@@ -235,10 +241,10 @@ EOL;
             //new
             $query = <<< EOL
 INSERT INTO sellshop (
-    id, price, sell_limit, item_id, item_meta, sign_x, sign_y, sign_z, sign_world, chest_x, chest_y, chest_z, chest_world
+    id, price, sell_limit, item_id, item_meta, sign_x, sign_y, sign_z, sign_world, chest_x, chest_y, chest_z, chest_world, owner
 )
 VALUES (
-    :id, :price, :sell_limit, :item_id, :item_meta, :sign_x, :sign_y, :sign_z, :sign_world, :chest_x, :chest_y, :chest_z, :chest_world
+    :id, :price, :sell_limit, :item_id, :item_meta, :sign_x, :sign_y, :sign_z, :sign_world, :chest_x, :chest_y, :chest_z, :chest_world, :owner
 );
 EOL;
             $stmt = $this->db->prepare($query);
@@ -255,6 +261,7 @@ EOL;
             $stmt->bindValue(":chest_y", $shop->getChestPos()->getY(), SQLITE3_INTEGER);
             $stmt->bindValue(":chest_z", $shop->getChestPos()->getZ(), SQLITE3_INTEGER);
             $stmt->bindValue(":chest_world", $shop->getChestPos()->getLevel()->getName(), SQLITE3_TEXT);
+            $stmt->bindValue(":owner", $shop->getOwner(), SQLITE3_TEXT);
             $stmt->execute();
         } else {
             //update
@@ -262,7 +269,7 @@ EOL;
 UPDATE sellshop
 SET price = :price, sell_limit = :sell_limit, item_id = :item_id, item_meta = :item_meta,
 sign_x = :sign_x, sign_y = :sign_y, sign_z = :sign_z, sign_world = :sign_world,
-chest_x = :chest_x, chest_y = :chest_y, chest_z = :chest_z, chest_world = :chest_world
+chest_x = :chest_x, chest_y = :chest_y, chest_z = :chest_z, chest_world = :chest_world, owner = :owner
 WHERE id = :id;
 EOL;
             $stmt = $this->db->prepare($query);
@@ -279,6 +286,7 @@ EOL;
             $stmt->bindValue(":chest_y", $shop->getChestPos()->getY(), SQLITE3_INTEGER);
             $stmt->bindValue(":chest_z", $shop->getChestPos()->getZ(), SQLITE3_INTEGER);
             $stmt->bindValue(":chest_world", $shop->getChestPos()->getLevel()->getName(), SQLITE3_TEXT);
+            $stmt->bindValue(":owner", $shop->getOwner(), SQLITE3_TEXT);
             $stmt->execute();
         }
     }

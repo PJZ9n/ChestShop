@@ -37,12 +37,13 @@ class SellShop extends Shop
      * @param int $itemMeta
      * @param Position $signPos
      * @param Position $chestPos
+     * @param string $owner
      * @param int $limit
      */
-    public function __construct(int $id, int $price, int $itemId, int $itemMeta, Position $signPos, Position $chestPos, int $limit)
+    public function __construct(int $id, int $price, int $itemId, int $itemMeta, Position $signPos, Position $chestPos, string $owner, int $limit)
     {
         $this->limit = $limit;
-        parent::__construct($id, $price, $itemId, $itemMeta, $signPos, $chestPos);
+        parent::__construct($id, $price, $itemId, $itemMeta, $signPos, $chestPos, $owner);
     }
 
     /**

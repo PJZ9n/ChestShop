@@ -46,6 +46,9 @@ class Shop
     /** @var Position */
     private $chestPos;
 
+    /** @var string */
+    private $owner;
+
     /**
      * @param int $id
      * @param int $price
@@ -53,8 +56,9 @@ class Shop
      * @param int $itemMeta
      * @param Position $signPos
      * @param Position $chestPos
+     * @param string $owner
      */
-    public function __construct(int $id, int $price, int $itemId, int $itemMeta, Position $signPos, Position $chestPos)
+    public function __construct(int $id, int $price, int $itemId, int $itemMeta, Position $signPos, Position $chestPos, string $owner)
     {
         $this->id = $id;
         $this->price = $price;
@@ -62,6 +66,7 @@ class Shop
         $this->itemMeta = $itemMeta;
         $this->signPos = $signPos;
         $this->chestPos = $chestPos;
+        $this->owner = $owner;
     }
 
     /**
@@ -142,5 +147,21 @@ class Shop
     public function getChestPos(): Position
     {
         return $this->chestPos;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOwner(): string
+    {
+        return $this->owner;
+    }
+
+    /**
+     * @param string $owner
+     */
+    public function setOwner(string $owner): void
+    {
+        $this->owner = $owner;
     }
 }
