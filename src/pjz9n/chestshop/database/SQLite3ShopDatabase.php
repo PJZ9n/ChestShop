@@ -183,7 +183,7 @@ EOL;
         return $logs;
     }
 
-    public function addBuyLog(BuyLog $log): void
+    public function saveBuyLog(BuyLog $log): void
     {
         $stmt = $this->db->prepare(
             "SELECT * FROM buylog WHERE shop_id = :shop_id;"
@@ -295,7 +295,7 @@ EOL;
         return $logs;
     }
 
-    public function addSellLog(SellLog $log): void
+    public function saveSellLog(SellLog $log): void
     {
         $stmt = $this->db->prepare(
             "SELECT * FROM selllog WHERE shop_id = :shop_id;"

@@ -57,11 +57,11 @@ interface ShopDatabase
     public function getAllBuyLog(): array;
 
     /**
-     * add the buy log
+     * save buy log
      *
      * @param BuyLog $log
      */
-    public function addBuyLog(BuyLog $log): void;
+    public function saveBuyLog(BuyLog $log): void;
 
     /**
      * get all SellChestShop
@@ -85,9 +85,9 @@ interface ShopDatabase
     public function getAllSellLog(): array;
 
     /**
-     * add the sell log
+     * save sell log
      *
      * @param SellLog $log
      */
-    public function addSellLog(SellLog $log): void;
+    public function saveSellLog(SellLog $log): void;
 }
