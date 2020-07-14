@@ -25,12 +25,14 @@ namespace pjz9n\chestshop;
 
 use CortexPE\Commando\exception\HookAlreadyRegistered;
 use CortexPE\Commando\PacketHooker;
+use pjz9n\chestshop\database\SQLite3ShopDatabase;
 use PJZ9n\MoneyConnector\MoneyConnector;
 use PJZ9n\MoneyConnector\MoneyConnectorUtils;
 use pocketmine\lang\BaseLang;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 use RuntimeException;
+use SQLite3;
 
 class Main extends PluginBase
 {
@@ -39,6 +41,9 @@ class Main extends PluginBase
 
     /** @var MoneyConnector */
     private $money;
+
+    /** @var ShopManager */
+    private $shopManager;
 
     /**
      * @throws HookAlreadyRegistered
@@ -68,5 +73,14 @@ class Main extends PluginBase
         if (!PacketHooker::isRegistered()) {
             PacketHooker::register($this);
         }
+        //shopmanager
+        $dbPath = $this->getDataFolder() . "shop.sqlite";
+        if (!file_exists($dbPath)) {
+            $flags = SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE;
+        } else {
+            $flags = SQLITE3_OPEN_READWRITE;
+        }
+        $db = new SQLite3($dbPath, $flags);
+        $this->shopManager = new ShopManager(new SQLite3ShopDatabase($db));
     }
 }
