@@ -8,7 +8,7 @@ projects:
       - src: dktapps-pm-pl/pmforms/pmforms
         version: 1.0.0
       - src: PJZ9n/MoneyConnector/MoneyConnector
-        version: 1.2.1
+        version: 2.1.0
       - src: CortexPE/Commando/Commando
         version: 2.1.1
       - src: PJZ9n/Validator-Support-Virion/Validator
