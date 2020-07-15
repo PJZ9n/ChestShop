@@ -99,7 +99,10 @@ class ShopManager
      */
     public function addBuyShop(int $price, Item $item, Position $signPos, Position $chestPos, Player $owner): void
     {
-        $id = $this->buyShops[array_key_last($this->buyShops)]->getId() + 1;//TODO
+        $id = 0;
+        if (count($this->buyShops) > 0) {
+            $id = $this->buyShops[array_key_last($this->buyShops)]->getId() + 1;//TODO
+        }
         $this->buyShops[$id] = new BuyShop(
             $id,
             $price,
