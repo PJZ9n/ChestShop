@@ -67,7 +67,7 @@ class ShopManager
         $this->sellLogs = $this->shopDatabase->getAllSellLog();
     }
 
-    public function __destruct()
+    public function close(): void
     {
         foreach ($this->buyShops as $buyShop) {
             $this->shopDatabase->saveBuyShop($buyShop);

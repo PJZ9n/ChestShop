@@ -26,10 +26,14 @@ namespace pjz9n\chestshop;
 use CortexPE\Commando\exception\HookAlreadyRegistered;
 use CortexPE\Commando\PacketHooker;
 use flowy\Flowy;
+use pjz9n\chestshop\command\chestshop\ChestShopCommand;
 use pjz9n\chestshop\database\SQLite3ShopDatabase;
+use pjz9n\chestshop\listener\ShopListener;
 use PJZ9n\MoneyConnector\MoneyConnector;
 use PJZ9n\MoneyConnector\MoneyConnectorUtils;
 use pocketmine\lang\BaseLang;
+use pocketmine\permission\Permission;
+use pocketmine\permission\PermissionManager;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 use RuntimeException;
@@ -85,5 +89,30 @@ class Main extends PluginBase
         }
         $db = new SQLite3($dbPath, $flags);
         $this->shopManager = new ShopManager(new SQLite3ShopDatabase($db));
+        //permission
+        PermissionManager::getInstance()->addPermission(new Permission(
+            "chestshop.bypass.shop.protection",
+            "Bypass shop protection.",
+            Permission::DEFAULT_OP
+        ));
+        PermissionManager::getInstance()->addPermission(new Permission(
+            "chestshop.command.chestshop",
+            "Allow the [/chestshop] command to all users.",
+            Permission::DEFAULT_TRUE
+        ));
+        PermissionManager::getInstance()->addPermission(new Permission(
+            "chestshop.command.chestshop.create",
+            "Allow the [/chestshop create] command to all users.",
+            Permission::DEFAULT_TRUE
+        ));
+        //listener
+        $this->getServer()->getPluginManager()->registerEvents(new ShopListener($this->lang, $this->money, $this->shopManager), $this);
+        //command
+        $this->getServer()->getCommandMap()->register($this->getName(), new ChestShopCommand($this, $this->lang, $this->shopManager));
+    }
+
+    public function onDisable(): void
+    {
+        $this->shopManager->close();
     }
 }
